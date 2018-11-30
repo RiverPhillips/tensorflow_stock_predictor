@@ -7,6 +7,7 @@ import json
 import os
 import numpy as np
 import tensorflow as tf
+from data_generator import DataGeneratorSeq
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -144,11 +145,21 @@ for pred_idx in range(1, N):
 
 print('MSE error for EMA averaging: %.5f' % (0.5*np.mean(mse_errors)))
 
-plt.figure(figsize=(18, 9))
-plt.plot(range(df.shape[0]), all_mid_data, color='b', label='True')
-plt.plot(range(0, N), run_avg_predictions, color='orange', label='Prediction')
-# plt.xticks(range(0,df.shape[0],50),df['Date'].loc[::50],rotation=45)
-plt.xlabel('Date')
-plt.ylabel('Mid Price')
-plt.legend(fontsize=18)
-plt.show()
+# plt.figure(figsize=(18, 9))
+# plt.plot(range(df.shape[0]), all_mid_data, color='b', label='True')
+# plt.plot(range(0, N), run_avg_predictions, color='orange', label='Prediction')
+# # plt.xticks(range(0,df.shape[0],50),df['Date'].loc[::50],rotation=45)
+# plt.xlabel('Date')
+# plt.ylabel('Mid Price')
+# plt.legend(fontsize=18)
+# plt.show()
+
+dg = DataGeneratorSeq(train_data, 5, 5)
+u_data, u_labels = dg.unroll_batches()
+
+for ui, (dat, lbl) in enumerate(zip(u_data, u_labels)):
+    print('\n\nUnrolled index %d' % ui)
+    dat_ind = dat
+    lbl_ind = lbl
+    print('\tInputs: ', dat)
+    print('\n\tOutput:', lbl)
