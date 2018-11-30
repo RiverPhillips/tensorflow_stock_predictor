@@ -1,1 +1,5 @@
 venv/
+Stocks/
+.vscode/
+
+stock_market_data-amzn.csv
